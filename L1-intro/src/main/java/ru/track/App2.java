@@ -1,12 +1,30 @@
 package ru.track;
 
-
-import org.apache.commons.lang3.StringUtils;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import org.json.JSONObject;
 
 public class App2 {
 
-    public static void main(String[] args) {
-        String str = StringUtils.capitalize(args[0]);
-        System.out.println(str);
+    public static final String URL = "http://guarded-mesa-31536.herokuapp.com/track";
+    public static final String FIELD_NAME = "name";
+    public static final String FIELD_GITHUB = "github";
+    public static final String FIELD_EMAIL = "email";
+
+    public static void main(String[] args) throws Exception {
+        // 1) Use Unirest.post()
+        // 2) Get response .asJson()
+        HttpResponse<JsonNode> response = Unirest.post(URL)
+                .field(FIELD_NAME, "Bogdan")
+                .field(FIELD_GITHUB, "kotik98")
+                .field(FIELD_EMAIL, "zaharin.98@mail.ru")
+                .field("success", false)
+                .asJson();
+        // 3) Get json body and JsonObject
+        JSONObject jsonObject = response.getBody().getObject();
+        // 4) Get field "success" from JsonObject
+        boolean success = jsonObject.getBoolean("success");
+        System.out.println(success);
     }
 }
