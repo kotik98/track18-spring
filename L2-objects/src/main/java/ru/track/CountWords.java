@@ -1,6 +1,8 @@
 package ru.track;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 
 
 /**
@@ -40,19 +42,49 @@ public class CountWords {
      * @return - целое число - сумма всех чисел из файла
      */
     public long countNumbers(File file) throws Exception {
-        return 0;
+        long result = 0;
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String line = null;
+        while (true) {
+            line = bufferedReader.readLine();
+            if (line == null) {
+                break;
+            }
+            if (isInt(line)) {
+                Integer k = Integer.parseInt(line);
+                result += k;
+            }
+        }
+        return result;
     }
 
-
-    /**
-     * Метод на вход принимает объект File, изначально результат= ""
-     * Нужно пройти по всем строкам файла, и если в строка не пустая и не число
-     * то надо присоединить ее к результату через пробел
-     * @param file - файл с данными
-     * @return - результирующая строка
-     */
     public String concatWords(File file) throws Exception {
-        return null;
+        StringBuilder result = new StringBuilder("");
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String line = null;
+        while (true) {
+            line = bufferedReader.readLine();
+            if (line == null) {
+                break;
+            }
+            if (!isInt(line)) {
+                if (!line.equals(skipWord)) {
+                    result.append(line + " ");
+                }
+            }
+        }
+        return result.toString();
+    }
+
+    public boolean isInt(String s) {
+        for (char c : s.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
