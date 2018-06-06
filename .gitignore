@@ -1,5 +1,5 @@
 **/*.iml
 /.idea
 **/target/
-/L1-intro
-/L2-objects
+**/L1-intro/
+**/L2-objects/
