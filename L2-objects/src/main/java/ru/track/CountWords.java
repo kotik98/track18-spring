@@ -34,13 +34,6 @@ public class CountWords {
         this.skipWord = skipWord;
     }
 
-    /**
-     * Метод на вход принимает объект File, изначально сумма = 0
-     * Нужно пройти по всем строкам файла, и если в строке стоит целое число,
-     * то надо добавить это число к сумме
-     * @param file - файл с данными
-     * @return - целое число - сумма всех чисел из файла
-     */
     public long countNumbers(File file) throws Exception {
         long result = 0;
         FileReader fileReader = new FileReader(file);
