@@ -1,7 +1,7 @@
 package ru.track.cypher;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.Map.Entry;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +24,12 @@ public class Decoder {
 
         cypher = new LinkedHashMap<>();
 
+        Iterator<Entry<Character, Integer>> domainHistIterator = domainHist.entrySet().iterator();
+        Iterator<Entry<Character, Integer>> encryptedDomainHistIterator = encryptedDomainHist.entrySet().iterator();
 
+        while (domainHistIterator.hasNext() && encryptedDomainHistIterator.hasNext()) {
+            cypher.put(encryptedDomainHistIterator.next().getKey(), domainHistIterator.next().getKey());
+        }
     }
 
     public Map<Character, Character> getCypher() {
@@ -39,7 +44,16 @@ public class Decoder {
      */
     @NotNull
     public String decode(@NotNull String encoded) {
-        return null;
+        StringBuilder decoded = new StringBuilder(encoded.length());
+        for (Character c:
+             encoded.toCharArray()) {
+            if (Character.isAlphabetic(c)){
+                decoded.append(cypher.get(Character.toLowerCase(c)));
+            } else {
+                decoded.append(c);
+            }
+        }
+        return decoded.toString();
     }
 
     /**
@@ -53,7 +67,25 @@ public class Decoder {
      */
     @NotNull
     Map<Character, Integer> createHist(@NotNull String text) {
-        return null;
+        Map<Character, Integer> hist = new LinkedHashMap<>();
+        for (Character curr = 'a'; curr < '{'; curr++) {
+            Integer f = 0;
+            for (int i = 0; i < text.length(); i++) {
+                if (Character.toLowerCase(text.charAt(i)) == curr) {
+                    f++;
+                }
+            }
+            hist.put(curr, f);
+        }
+
+        List<Map.Entry<Character, Integer>> entryList = new ArrayList<>(hist.entrySet());
+        Collections.sort(entryList, (a, b) -> { return b.getValue() - a.getValue(); });
+        hist.clear();
+        for (Map.Entry<Character, Integer> e:
+             entryList) {
+            hist.put(e.getKey(), e.getValue());
+        }
+        return hist;
     }
 
 }
